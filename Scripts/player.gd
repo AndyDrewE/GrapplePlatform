@@ -1,10 +1,11 @@
 extends CharacterBody2D
 
 ## TODO: Dynamic camera smoothing as player gets faster
+## TODO: Grappling hook
 
 @export var SPEED = 150.0
 @export var JUMP_VELOCITY = -500.0
-@export var TERMINAL_VELOCITY = 5000.0
+@export var TERMINAL_VELOCITY = 1000.0
 const MAX_GRAPPLE_DIST = 700.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
