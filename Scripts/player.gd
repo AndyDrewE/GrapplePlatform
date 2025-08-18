@@ -6,6 +6,8 @@ extends CharacterBody2D
 @export var SPEED = 150.0
 @export var JUMP_VELOCITY = -500.0
 @export var TERMINAL_VELOCITY = 1000.0
+@export var REEL_SPEED = 300.0
+@export var TANGENTIAL_ACCEL = 1200.0
 const MAX_GRAPPLE_DIST = 700.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -14,12 +16,20 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #Grappling hook
 @onready var grapple_raycast = $GrappleRay
 var grappling = false
+var grapple_point := Vector2.ZERO
+var rope_length := 0.0
 
 func _input(event):
 	pass
 
 func _physics_process(delta):
-	grapple()
+	
+	#Handle Grappling
+	if Input.is_action_just_pressed("ui_shoot"):
+		if !grappling:
+			grapple()
+		else:
+			release_grapple()
 	
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
@@ -35,16 +45,54 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
+	if not grappling:
+		if direction:
+			velocity.x = direction * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		# --- Swing physics (rope constraint) ---
+		var r := global_position - grapple_point
+		var dist = max(r.length(), 0.001)
+		var dir = r / dist                     # from anchor -> player
+		var tangent := Vector2(dir.y, dir.x)   # 90° to the rope
 
+		if Input.is_action_pressed("grapple_reel_in"):
+			rope_length = max(40.0, rope_length - REEL_SPEED * delta)
+		if Input.is_action_pressed("grapple_reel_out"):
+			rope_length = min(MAX_GRAPPLE_DIST, rope_length + REEL_SPEED * delta)
+
+		# Pump the swing with left/right as tangential acceleration
+		velocity += tangent * (direction * TANGENTIAL_ACCEL * delta)
+
+		# Remove outward radial velocity when rope is taut (keeps circular motion)
+		var v_radial := velocity.dot(dir)
+		if dist >= rope_length and v_radial > 0.0:
+			velocity -= dir * v_radial
 	move_and_slide()
 
 func grapple():
-	grapple_raycast.target_position = get_global_mouse_position()
-	if Input.is_action_just_pressed("ui_shoot"):
-		print(grapple_raycast.target_position)
+	# Aim the ray in LOCAL space, then cast once
+	var to_mouse_local = grapple_raycast.to_local(get_global_mouse_position())
+	if to_mouse_local.length() > MAX_GRAPPLE_DIST:
+		to_mouse_local = to_mouse_local.normalized() * MAX_GRAPPLE_DIST
+	grapple_raycast.target_position = to_mouse_local
+	grapple_raycast.enabled = true
+	grapple_raycast.force_raycast_update()
+
+	if grapple_raycast.is_colliding():
+		grapple_point = grapple_raycast.get_collision_point()
+		rope_length = (global_position - grapple_point).length()
+		grappling = true
+		print("Grapple attached at: ", grapple_point)
+	# turn the node off regardless; we only needed it to find the hit
+	grapple_raycast.enabled = false
+
+func release_grapple():
+	grappling = false
+
+func get_grapple_direction():
+	var direction = self.position.direction_to(get_global_mouse_position())
+	var target_position = (direction * MAX_GRAPPLE_DIST) + self.position
+	return target_position
