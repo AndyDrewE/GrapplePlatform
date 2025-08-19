@@ -28,3 +28,6 @@ shape = SubResource("RectangleShape2D_a04ih")
 enabled = false
 target_position = Vector2(0, 0)
 collide_with_areas = true
+
+[node name="GrappleRope" type="Line2D" parent="GrappleRay"]
+width = 2.0
