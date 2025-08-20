@@ -31,11 +31,8 @@ func _physics_process(delta):
 		velocity.y += JUMP_VELOCITY
 	#If player releases jump, reverse velocity and slow it down
 	if Input.is_action_just_released("ui_accept") and not is_on_floor():
-		if grappling:
-			release_grapple()
-		else:
-			if velocity.y < 0:
-				velocity.y = -velocity.y*0.5
+		if velocity.y < 0:
+			velocity.y = -velocity.y*0.5
 
 	#Cap vertical velocity
 	if velocity.y >= TERMINAL_VELOCITY:
