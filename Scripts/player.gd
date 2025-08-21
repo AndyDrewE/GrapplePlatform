@@ -10,7 +10,7 @@ extends CharacterBody2D
 @export var TERMINAL_VELOCITY = 1000.0
 @export var REEL_SPEED = 300.0
 @export var TANGENTIAL_ACCEL = 500.0
-const MAX_GRAPPLE_DIST = 700.0
+@export var MAX_GRAPPLE_DIST = 100.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -95,6 +95,7 @@ func grapple():
 	if grapple_raycast.is_colliding():
 		grapple_point = grapple_raycast.get_collision_point()
 		rope_length = (global_position - grapple_point).length()
+		print(rope_length)
 		grappling = true
 		
 		
