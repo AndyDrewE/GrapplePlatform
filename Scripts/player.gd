@@ -110,4 +110,3 @@ func get_grapple_direction():
 	var direction = self.position.direction_to(get_global_mouse_position())
 	var target_position = (direction * MAX_GRAPPLE_DIST) + self.position
 	return target_position
-
