@@ -22,6 +22,12 @@ var grappling = false
 var grapple_point := Vector2.ZERO
 var rope_length := 0.0
 
+#Wall jump
+@export var WALL_JUMP_PUSHBACK = 200
+@export var WALL_JUMP_LOCK = 0.12
+var wall_jump_timer = 0.0
+@onready var wall_slide_gravity = gravity * 0.1
+
 func _input(event):
 	pass
 
@@ -35,11 +41,15 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	var direction = Input.get_axis("ui_left", "ui_right")
+	
 	if not grappling:
-		if direction:
-			velocity.x = direction * SPEED
+		if wall_jump_timer > 0.0:
+			wall_jump_timer -= delta
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
+			if direction:
+				velocity.x = direction * SPEED
+			else:
+				velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
 		# --- Swing physics (rope constraint) ---
 		var r = global_position - grapple_point
@@ -59,6 +69,9 @@ func _physics_process(delta):
 		var v_radial := velocity.dot(dir)
 		if dist >= rope_length and v_radial > 0.0:
 			velocity -= dir * v_radial
+			
+	
+		
 	move_and_slide()
 	
 	#Handle Grappling
@@ -110,7 +123,15 @@ func jump():
 	if Input.is_action_just_pressed("ui_accept"): 
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
-		
+		#Wall Jump
+		elif is_on_wall_only():
+			velocity = Vector2(get_wall_normal().x * WALL_JUMP_PUSHBACK, JUMP_VELOCITY)
+			wall_jump_timer = WALL_JUMP_LOCK
+			
+	
+	if is_on_wall_only() and Input.get_axis("ui_left", "ui_right"):
+		velocity.y = min(velocity.y, wall_slide_gravity)
+	
 	#If player releases jump, reverse velocity and slow it down
 	if Input.is_action_just_released("ui_accept") and not is_on_floor():
 		if velocity.y < 0:
