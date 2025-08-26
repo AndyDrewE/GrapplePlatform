@@ -5,6 +5,8 @@ extends CharacterBody2D
 ## TODO: Some sort of UI to tell you where the grappling hook will land
 ## TODO: Grappling hook very hard to control with kbm
 
+@export var state_machine : StateMachine
+
 @export var SPEED = 150.0
 @export var JUMP_VELOCITY = -500.0
 @export var TERMINAL_VELOCITY = 1000.0
@@ -30,6 +32,7 @@ var wall_jump_timer = 0.0
 
 func _input(event):
 	pass
+	
 
 func _physics_process(delta):
 	jump()
