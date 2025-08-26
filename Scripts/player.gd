@@ -1,4 +1,4 @@
-class_name Player extends CharacterBody2D
+extends CharacterBody2D
 
 ## TODO: Dynamic camera smoothing as player gets faster
 ## TODO: Grappling hook: keep tangential velocity when releasing the hook
@@ -26,14 +26,7 @@ func _input(event):
 	pass
 
 func _physics_process(delta):
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y += JUMP_VELOCITY
-	#If player releases jump, reverse velocity and slow it down
-	if Input.is_action_just_released("ui_accept") and not is_on_floor():
-		if velocity.y < 0:
-			velocity.y = -velocity.y*0.5
-
+	jump()
 	#Cap vertical velocity
 	if velocity.y >= TERMINAL_VELOCITY:
 		velocity.y = TERMINAL_VELOCITY
@@ -67,7 +60,6 @@ func _physics_process(delta):
 		if dist >= rope_length and v_radial > 0.0:
 			velocity -= dir * v_radial
 	move_and_slide()
-	
 	
 	#Handle Grappling
 	if Input.is_action_just_pressed("ui_shoot"):
@@ -112,3 +104,14 @@ func get_grapple_direction():
 	var direction = self.position.direction_to(get_global_mouse_position())
 	var target_position = (direction * MAX_GRAPPLE_DIST) + self.position
 	return target_position
+
+func jump():
+	# Handle jump.
+	if Input.is_action_just_pressed("ui_accept"): 
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		
+	#If player releases jump, reverse velocity and slow it down
+	if Input.is_action_just_released("ui_accept") and not is_on_floor():
+		if velocity.y < 0:
+			velocity.y = -velocity.y*0.5
