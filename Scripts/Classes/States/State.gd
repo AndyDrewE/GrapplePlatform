@@ -1,4 +1,10 @@
-class_name StateIdle extends State
+#Base State class
+class_name State extends Node
+
+@onready var actor : CharacterBody2D = self.get_parent().get_parent()
+
+## Emitted when the state finishes and wants to transition to another state.
+signal finished
 
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(_event: InputEvent) -> void:
@@ -10,13 +16,12 @@ func update(_delta: float) -> void:
 
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(_delta: float) -> void:
-	if Input.get_axis("ui_left", "ui_right"):
-		finished.emit(self, "StateRunning")
+	pass
 
-## Called by the state machine upon changing the active state.
+## Called by the state machine upon changing the active state. The `data` parameter
+## is a dictionary with arbitrary data the state can use to initialize itself.
 func enter() -> void:
-	#probably play an animation or something idk
-	print("Idle")
+	pass
 
 ## Called by the state machine before changing the active state. Use this function
 ## to clean up the state.

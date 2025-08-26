@@ -1,24 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://eqn3y2gkhyho"]
+[gd_scene load_steps=9 format=3 uid="uid://eqn3y2gkhyho"]
 
 [ext_resource type="Script" uid="uid://c4200ntgv7ja4" path="res://Scripts/player.gd" id="1_y62nq"]
 [ext_resource type="Texture2D" uid="uid://clxb2greq3b7y" path="res://Assets/Player.png" id="2_bqm40"]
-[ext_resource type="Script" uid="uid://bqjtw03mwpgjx" path="res://Scripts/Resources/Classes/StateMachines/StateMachine.gd" id="3_6t5aa"]
-[ext_resource type="Script" uid="uid://c7vm5um61omfx" path="res://Scripts/Resources/Classes/States/StateIdle.gd" id="4_vgqql"]
-[ext_resource type="Script" uid="uid://c0msrdy14vrk7" path="res://Scripts/Resources/Classes/States/StateRunning.gd" id="5_fkybt"]
+[ext_resource type="Script" uid="uid://bqjtw03mwpgjx" path="res://Scripts/Classes/StateMachines/StateMachine.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://c7vm5um61omfx" path="res://Scripts/Classes/States/StateIdle.gd" id="4_vgqql"]
+[ext_resource type="Script" uid="uid://c0msrdy14vrk7" path="res://Scripts/Classes/States/StateRunning.gd" id="5_fkybt"]
+[ext_resource type="Script" uid="uid://dqif3d4dl5gs8" path="res://Scripts/Classes/States/StateGrounded.gd" id="6_x3wgy"]
+[ext_resource type="Script" uid="uid://c5vvopjvxbt8d" path="res://Scripts/Classes/States/StateAirborne.gd" id="7_3smsa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a04ih"]
 size = Vector2(15, 15)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_y62nq")
-SPEED = null
-JUMP_VELOCITY = null
-TERMINAL_VELOCITY = null
-REEL_SPEED = null
-TANGENTIAL_ACCEL = null
-MAX_GRAPPLE_DIST = null
-WALL_JUMP_PUSHBACK = null
-WALL_JUMP_LOCK = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -50)
@@ -43,14 +37,27 @@ collide_with_areas = true
 [node name="GrappleRope" type="Line2D" parent="GrappleRay"]
 width = 2.0
 
-[node name="Locomotion" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="HorizontalStates" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_6t5aa")
 initial_state = NodePath("StateIdle")
 
-[node name="StateIdle" type="Node" parent="Locomotion"]
+[node name="StateIdle" type="Node" parent="HorizontalStates"]
 script = ExtResource("4_vgqql")
 metadata/_custom_type_script = "uid://c7vm5um61omfx"
 
-[node name="StateRunning" type="Node" parent="Locomotion"]
+[node name="StateRunning" type="Node" parent="HorizontalStates"]
 script = ExtResource("5_fkybt")
 metadata/_custom_type_script = "uid://c0msrdy14vrk7"
+
+[node name="VerticalStates" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_6t5aa")
+initial_state = NodePath("StateGrounded")
+metadata/_custom_type_script = "uid://bqjtw03mwpgjx"
+
+[node name="StateGrounded" type="Node" parent="VerticalStates"]
+script = ExtResource("6_x3wgy")
+metadata/_custom_type_script = "uid://dqif3d4dl5gs8"
+
+[node name="StateAirborne" type="Node" parent="VerticalStates"]
+script = ExtResource("7_3smsa")
+metadata/_custom_type_script = "uid://c5vvopjvxbt8d"

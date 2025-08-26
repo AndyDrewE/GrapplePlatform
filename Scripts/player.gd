@@ -5,7 +5,6 @@ extends CharacterBody2D
 ## TODO: Some sort of UI to tell you where the grappling hook will land
 ## TODO: Grappling hook very hard to control with kbm
 
-
 @export var SPEED = 150.0
 @export var JUMP_VELOCITY = -500.0
 @export var TERMINAL_VELOCITY = 1000.0
@@ -48,6 +47,7 @@ func _physics_process(delta):
 		if wall_jump_timer > 0.0:
 			wall_jump_timer -= delta
 		else:
+			pass
 			
 	else:
 		# --- Swing physics (rope constraint) ---
@@ -120,10 +120,8 @@ func get_grapple_direction():
 func jump():
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept"): 
-		if is_on_floor():
-			velocity.y = JUMP_VELOCITY
 		#Wall Jump
-		elif is_on_wall_only():
+		if is_on_wall_only():
 			velocity = Vector2(get_wall_normal().x * WALL_JUMP_PUSHBACK, JUMP_VELOCITY)
 			wall_jump_timer = WALL_JUMP_LOCK
 			
@@ -131,7 +129,4 @@ func jump():
 	if is_on_wall_only() and Input.get_axis("ui_left", "ui_right"):
 		velocity.y = min(velocity.y, wall_slide_gravity)
 	
-	#If player releases jump, reverse velocity and slow it down
-	if Input.is_action_just_released("ui_accept") and not is_on_floor():
-		if velocity.y < 0:
-			velocity.y = -velocity.y*0.5
+	

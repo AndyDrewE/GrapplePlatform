@@ -1,8 +1,4 @@
-#Base State class
-class_name State extends Node
-
-## Emitted when the state finishes and wants to transition to another state.
-signal finished
+class_name StateIdle extends State
 
 ## Called by the state machine when receiving unhandled input events.
 func handle_input(_event: InputEvent) -> void:
@@ -14,11 +10,14 @@ func update(_delta: float) -> void:
 
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(_delta: float) -> void:
-	pass
+	if Input.get_axis("ui_left", "ui_right"):
+		finished.emit(self, "StateRunning")
+	
 
-## Called by the state machine upon changing the active state. The `data` parameter
-## is a dictionary with arbitrary data the state can use to initialize itself.
+## Called by the state machine upon changing the active state.
 func enter() -> void:
+	#probably play an animation or something idk
+	#print("Idle")
 	pass
 
 ## Called by the state machine before changing the active state. Use this function

@@ -22,3 +22,11 @@ tile_map_data = PackedByteArray("AADt//b/AAAAAAAAAADu//b/AAAAAAAAAADv//b/AAAAAAA
 tile_set = SubResource("TileSet_th3vl")
 
 [node name="Player" parent="." instance=ExtResource("1_s74ln")]
+SPEED = 150.0
+JUMP_VELOCITY = -500.0
+TERMINAL_VELOCITY = 1000.0
+REEL_SPEED = 300.0
+TANGENTIAL_ACCEL = 500.0
+MAX_GRAPPLE_DIST = 100.0
+WALL_JUMP_PUSHBACK = 200
+WALL_JUMP_LOCK = 0.12
