@@ -1,4 +1,4 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
 
 ## TODO: Dynamic camera smoothing as player gets faster
 ## TODO: Grappling hook: keep tangential velocity when releasing the hook
@@ -94,9 +94,11 @@ func grapple():
 
 	if grapple_raycast.is_colliding():
 		grapple_point = grapple_raycast.get_collision_point()
-		rope_length = (global_position - grapple_point).length()
-		print(rope_length)
-		grappling = true
+		var collision_normal = grapple_raycast.get_collision_normal()
+		#check if collision is on bottom
+		if collision_normal.y == 1:
+			rope_length = (global_position - grapple_point).length()
+			grappling = true
 		
 		
 	# turn the node off regardless; we only needed it to find the hit
