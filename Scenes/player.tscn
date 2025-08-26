@@ -9,9 +9,16 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a04ih"]
 size = Vector2(15, 15)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_machine")]
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_y62nq")
-state_machine = NodePath("StateMachine")
+SPEED = null
+JUMP_VELOCITY = null
+TERMINAL_VELOCITY = null
+REEL_SPEED = null
+TANGENTIAL_ACCEL = null
+MAX_GRAPPLE_DIST = null
+WALL_JUMP_PUSHBACK = null
+WALL_JUMP_LOCK = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -50)
@@ -36,14 +43,14 @@ collide_with_areas = true
 [node name="GrappleRope" type="Line2D" parent="GrappleRay"]
 width = 2.0
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="Locomotion" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_6t5aa")
 initial_state = NodePath("StateIdle")
 
-[node name="StateIdle" type="Node" parent="StateMachine"]
+[node name="StateIdle" type="Node" parent="Locomotion"]
 script = ExtResource("4_vgqql")
 metadata/_custom_type_script = "uid://c7vm5um61omfx"
 
-[node name="StateRunning" type="Node" parent="StateMachine"]
+[node name="StateRunning" type="Node" parent="Locomotion"]
 script = ExtResource("5_fkybt")
 metadata/_custom_type_script = "uid://c0msrdy14vrk7"

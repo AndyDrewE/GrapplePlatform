@@ -8,7 +8,7 @@ var states : Dictionary = {}
 func _ready() -> void:
 	for child in get_children():
 		if child is State:
-			states[child.name.to_lower()] = child
+			states[child.name] = child
 			child.finished.connect(on_child_finished)
 			
 	if initial_state:
@@ -28,7 +28,7 @@ func on_child_finished(state, new_state_name):
 	if state != current_state:
 		return
 
-	var new_state = states.get(new_state_name.to_lower())
+	var new_state = states.get(new_state_name)
 	if !new_state:
 		return
 		
@@ -36,3 +36,5 @@ func on_child_finished(state, new_state_name):
 		current_state.exit()
 	
 	new_state.enter()
+	
+	current_state = new_state

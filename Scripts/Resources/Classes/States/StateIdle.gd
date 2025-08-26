@@ -16,7 +16,7 @@ func physics_update(_delta: float) -> void:
 ## Called by the state machine upon changing the active state.
 func enter() -> void:
 	#probably play an animation or something idk
-	pass
+	print("Idle")
 
 ## Called by the state machine before changing the active state. Use this function
 ## to clean up the state.

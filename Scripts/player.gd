@@ -5,7 +5,6 @@ extends CharacterBody2D
 ## TODO: Some sort of UI to tell you where the grappling hook will land
 ## TODO: Grappling hook very hard to control with kbm
 
-@export var state_machine : StateMachine
 
 @export var SPEED = 150.0
 @export var JUMP_VELOCITY = -500.0
@@ -49,10 +48,7 @@ func _physics_process(delta):
 		if wall_jump_timer > 0.0:
 			wall_jump_timer -= delta
 		else:
-			if direction:
-				velocity.x = direction * SPEED
-			else:
-				velocity.x = move_toward(velocity.x, 0, SPEED)
+			
 	else:
 		# --- Swing physics (rope constraint) ---
 		var r = global_position - grapple_point
