@@ -33,7 +33,6 @@ func _input(event):
 	
 
 func _physics_process(delta):
-	jump()
 	#Cap vertical velocity
 	if velocity.y >= TERMINAL_VELOCITY:
 		velocity.y = TERMINAL_VELOCITY
@@ -117,16 +116,8 @@ func get_grapple_direction():
 	var target_position = (direction * MAX_GRAPPLE_DIST) + self.position
 	return target_position
 
-func jump():
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept"): 
-		#Wall Jump
-		if is_on_wall_only():
-			velocity = Vector2(get_wall_normal().x * WALL_JUMP_PUSHBACK, JUMP_VELOCITY)
-			wall_jump_timer = WALL_JUMP_LOCK
+
 			
 	
-	if is_on_wall_only() and Input.get_axis("ui_left", "ui_right"):
-		velocity.y = min(velocity.y, wall_slide_gravity)
 	
 	

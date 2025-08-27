@@ -1,7 +1,8 @@
 #Base State class
 class_name State extends Node
 
-@onready var actor : CharacterBody2D = self.get_parent().get_parent()
+@onready var state_machine : StateMachine = self.get_parent()
+@onready var actor : CharacterBody2D = state_machine.get_parent()
 
 ## Emitted when the state finishes and wants to transition to another state.
 signal finished
@@ -18,8 +19,7 @@ func update(_delta: float) -> void:
 func physics_update(_delta: float) -> void:
 	pass
 
-## Called by the state machine upon changing the active state. The `data` parameter
-## is a dictionary with arbitrary data the state can use to initialize itself.
+## Called by the state machine upon changing the active state.
 func enter() -> void:
 	pass
 

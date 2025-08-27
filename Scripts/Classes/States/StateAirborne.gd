@@ -15,5 +15,8 @@ func physics_update(_delta: float) -> void:
 		if actor.velocity.y < 0:
 			actor.velocity.y = -actor.velocity.y*0.5
 	
+	if actor.is_on_wall_only():
+		finished.emit(self, "StateWallSlide")
+	
 	if actor.is_on_floor():
 		finished.emit(self, "StateGrounded")

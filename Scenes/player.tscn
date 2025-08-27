@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://eqn3y2gkhyho"]
+[gd_scene load_steps=10 format=3 uid="uid://eqn3y2gkhyho"]
 
 [ext_resource type="Script" uid="uid://c4200ntgv7ja4" path="res://Scripts/player.gd" id="1_y62nq"]
 [ext_resource type="Texture2D" uid="uid://clxb2greq3b7y" path="res://Assets/Player.png" id="2_bqm40"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://c0msrdy14vrk7" path="res://Scripts/Classes/States/StateRunning.gd" id="5_fkybt"]
 [ext_resource type="Script" uid="uid://dqif3d4dl5gs8" path="res://Scripts/Classes/States/StateGrounded.gd" id="6_x3wgy"]
 [ext_resource type="Script" uid="uid://c5vvopjvxbt8d" path="res://Scripts/Classes/States/StateAirborne.gd" id="7_3smsa"]
+[ext_resource type="Script" uid="uid://2dui00vjrp0t" path="res://Scripts/Classes/States/StateWallSlide.gd" id="7_8erm5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a04ih"]
 size = Vector2(15, 15)
@@ -57,6 +58,10 @@ metadata/_custom_type_script = "uid://bqjtw03mwpgjx"
 [node name="StateGrounded" type="Node" parent="VerticalStates"]
 script = ExtResource("6_x3wgy")
 metadata/_custom_type_script = "uid://dqif3d4dl5gs8"
+
+[node name="StateWallSlide" type="Node" parent="VerticalStates"]
+script = ExtResource("7_8erm5")
+metadata/_custom_type_script = "uid://2dui00vjrp0t"
 
 [node name="StateAirborne" type="Node" parent="VerticalStates"]
 script = ExtResource("7_3smsa")
