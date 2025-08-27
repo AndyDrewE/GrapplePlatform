@@ -1,7 +1,5 @@
 class_name StateMachine extends Node
 
-signal wall_jump
-
 @export var initial_state : State
 @export var current_state : State
 var states : Dictionary = {}

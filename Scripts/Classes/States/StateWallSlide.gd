@@ -7,10 +7,12 @@ func physics_update(_delta: float) -> void:
 	
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept"): 
+		actor.wall_jump.emit()
 		actor.velocity = Vector2(actor.get_wall_normal().x * actor.WALL_JUMP_PUSHBACK, actor.JUMP_VELOCITY)
-
 	
-	if actor.is_on_floor():
-		finished.emit(self, "StateGrounded")
-	else:
-		finished.emit(self, "StateAirborne")
+	if not actor.is_on_wall_only():
+		if not actor.is_on_floor():
+			finished.emit(self, "StateAirborne")
+		else:
+			finished.emit(self, "StateGrounded")
+	
