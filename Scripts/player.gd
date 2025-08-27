@@ -20,8 +20,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #Grappling hook
 @onready var grapple_raycast = $GrappleRay
 @onready var grapple_rope = $GrappleRay/GrappleRope
-var grapple_point := Vector2.ZERO
-var rope_length := 0.0
 var grappling = false
 
 #Wall jump

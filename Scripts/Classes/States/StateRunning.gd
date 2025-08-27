@@ -1,8 +1,5 @@
-extends State
+extends CharacterState
 class_name StateRunning
-
-func _ready():
-	pass
 
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(delta: float) -> void:
@@ -10,11 +7,17 @@ func physics_update(delta: float) -> void:
 	if actor.wall_jump_timer > 0.0:
 		actor.wall_jump_timer -= delta
 	else:
-		if direction:
-			actor.velocity.x = direction * actor.SPEED
-		else:
-			actor.velocity.x = move_toward(actor.velocity.x, 0, actor.SPEED)
-
+		handle_horizontal_movement()
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		jump_impulse()
+	
+	if Input.is_action_just_pressed("ui_shoot"):
+		finished.emit(self, "StateGrappling")
+	
+	if not actor.is_on_floor():
+		finished.emit(self, "StateAirborne")
+	
 	if !direction:
 		finished.emit(self, "StateIdle")
 

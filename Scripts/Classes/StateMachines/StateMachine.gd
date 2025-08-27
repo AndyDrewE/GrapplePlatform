@@ -39,4 +39,4 @@ func on_child_finished(state, new_state_name):
 	new_state.enter()
 	
 	current_state = new_state
-	#print(current_state)
+	print(current_state)
