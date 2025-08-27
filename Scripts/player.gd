@@ -23,8 +23,10 @@ var grappling = false
 #Wall jump
 @export var WALL_JUMP_PUSHBACK = 200
 @export var WALL_JUMP_LOCK = 0.12
+@export var WALL_STICK = 0.08
 var wall_jump_timer = 0.0
 @onready var wall_slide_gravity = gravity * 0.1
+
 
 func _input(event):
 	pass

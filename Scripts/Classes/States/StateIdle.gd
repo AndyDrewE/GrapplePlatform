@@ -11,5 +11,8 @@ func physics_update(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_shoot"):
 		finished.emit(self, "StateGrappling")
 	
+	if not actor.is_on_wall_only():
+		finished.emit(self, "StateWallSlide")
+	
 	if not actor.is_on_floor():
 		finished.emit(self, "StateAirborne")

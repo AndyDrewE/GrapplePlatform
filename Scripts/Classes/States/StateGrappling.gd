@@ -2,10 +2,12 @@ class_name StateGrappling extends CharacterState
 
 var grapple_point : Vector2 = Vector2.ZERO
 var rope_length = 0.0
+var latched = false
 
 ## Called by the state machine upon changing the active state.
 func enter() -> void:
-	if not grapple():
+	latched = grapple()
+	if not latched:
 		#No valid hook point
 		finished.emit(self, "StateAirborne")
 
@@ -16,7 +18,7 @@ func exit() -> void:
 
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(delta: float) -> void:
-	if grapple_point == Vector2.ZERO:
+	if not latched:
 		finished.emit(self, "StateAirborne")
 		return
 	
@@ -28,7 +30,7 @@ func physics_update(delta: float) -> void:
 	var tangent = Vector2(dir.y, dir.x)
 	
 	#enforce rope length
-	if dist > rope_length:
+	if rope_length > 0.0 and dist > rope_length:
 		actor.global_position = grapple_point + dir * rope_length
 	
 	#draw rope
@@ -70,14 +72,17 @@ func grapple():
 		grapple_point = actor.grapple_raycast.get_collision_point()
 		var collision_normal = actor.grapple_raycast.get_collision_normal()
 		#check if collision is on bottom
-		if collision_normal.y == 1.0:
+		if collision_normal == Vector2.DOWN:
 			rope_length = (actor.global_position - grapple_point).length()
-			print(collision_normal.y)
+		else:
+			hit = false
 		
 	# turn the node off regardless; we only needed it to find the hit
 	actor.grapple_raycast.enabled = false
 	return hit
 
 func release_grapple():
+	latched = false
 	grapple_point = Vector2.ZERO
+	rope_length = 0.0
 	actor.grapple_rope.points = []

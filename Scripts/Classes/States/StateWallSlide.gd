@@ -1,5 +1,9 @@
 class_name StateWallSlide extends CharacterState
 
+var stick_timer = 0.0
+
+
+
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(delta: float) -> void:
 	# Handle jump.
@@ -9,13 +13,21 @@ func physics_update(delta: float) -> void:
 		finished.emit(self, "StateAirborne")
 		return
 	
-	actor.velocity.y = min(actor.velocity.y + actor.gravity * delta, actor.wall_slide_gravity)
+	if Input.is_action_just_released("ui_accept"):
+		actor.velocity.y = actor.wall_slide_gravity
+	else:
+		actor.velocity.y = min(actor.velocity.y + actor.gravity * delta, actor.wall_slide_gravity)
+	
+	if actor.is_on_wall():
+		stick_timer = actor.WALL_STICK
+	else:
+		stick_timer -= delta
 	
 	if actor.is_on_floor():
 		finished.emit(self, "StateIdle")
 		return
 	else:
-		if not actor.is_on_wall():
+		if stick_timer <= 0.0:
 			finished.emit(self, "StateAirborne")
 			return
 	
