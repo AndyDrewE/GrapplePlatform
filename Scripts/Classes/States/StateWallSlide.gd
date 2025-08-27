@@ -4,9 +4,12 @@ class_name StateWallSlide extends State
 func physics_update(_delta: float) -> void:
 	if Input.get_axis("ui_left","ui_right"):
 		actor.velocity.y = min(actor.velocity.y, actor.wall_slide_gravity)
+		if actor.velocity.y == -480.0:
+			print(actor.velocity.y)
 	
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept"): 
+	if Input.is_action_just_pressed("ui_accept"):
+		actor.wall_jump_timer = actor.WALL_JUMP_LOCK
 		actor.wall_jump.emit()
 		actor.velocity = Vector2(actor.get_wall_normal().x * actor.WALL_JUMP_PUSHBACK, actor.JUMP_VELOCITY)
 	

@@ -2,9 +2,7 @@ extends State
 class_name StateRunning
 
 func _ready():
-	if not actor.is_connected("wall_jump", _on_wall_jump):
-		actor.wall_jump.connect(_on_wall_jump)
-		print("wall_jump signal connected")
+	pass
 
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(delta: float) -> void:
@@ -23,6 +21,3 @@ func physics_update(delta: float) -> void:
 ## Called by the state machine upon changing the active state.
 func enter() -> void:
 	pass
-
-func _on_wall_jump():
-	actor.wall_jump_timer = actor.WALL_JUMP_LOCK
