@@ -4,10 +4,8 @@ class_name StateRunning
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(delta: float) -> void:
 	var direction = Input.get_axis("ui_left", "ui_right")
-	if actor.wall_jump_timer > 0.0:
-		actor.wall_jump_timer -= delta
-	else:
-		handle_horizontal_movement()
+	
+	handle_horizontal_movement()
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		jump_impulse()

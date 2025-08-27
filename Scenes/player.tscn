@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://eqn3y2gkhyho"]
+[gd_scene load_steps=10 format=3 uid="uid://eqn3y2gkhyho"]
 
 [ext_resource type="Script" uid="uid://c4200ntgv7ja4" path="res://Scripts/player.gd" id="1_y62nq"]
 [ext_resource type="Texture2D" uid="uid://clxb2greq3b7y" path="res://Assets/Player.png" id="2_bqm40"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c7vm5um61omfx" path="res://Scripts/Classes/States/StateIdle.gd" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://c0msrdy14vrk7" path="res://Scripts/Classes/States/StateRunning.gd" id="5_fkybt"]
 [ext_resource type="Script" uid="uid://c5vvopjvxbt8d" path="res://Scripts/Classes/States/StateAirborne.gd" id="7_3smsa"]
+[ext_resource type="Script" uid="uid://2dui00vjrp0t" path="res://Scripts/Classes/States/StateWallSlide.gd" id="7_8erm5"]
 [ext_resource type="Script" uid="uid://dmepgn1sksbcr" path="res://Scripts/Classes/States/StateGrappling.gd" id="9_f1ek2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a04ih"]
@@ -57,3 +58,7 @@ metadata/_custom_type_script = "uid://c5vvopjvxbt8d"
 [node name="StateGrappling" type="Node" parent="StateMachine"]
 script = ExtResource("9_f1ek2")
 metadata/_custom_type_script = "uid://dmepgn1sksbcr"
+
+[node name="StateWallSlide" type="Node" parent="StateMachine"]
+script = ExtResource("7_8erm5")
+metadata/_custom_type_script = "uid://2dui00vjrp0t"

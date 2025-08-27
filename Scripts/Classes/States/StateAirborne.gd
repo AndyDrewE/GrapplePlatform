@@ -4,7 +4,10 @@ class_name StateAirborne extends CharacterState
 func physics_update(delta: float) -> void:
 	var direction = Input.get_axis("ui_left", "ui_right")
 	#Handle horizontal movement
-	handle_horizontal_movement()
+	if actor.wall_jump_timer > 0.0:
+		actor.wall_jump_timer -= delta
+	else:
+		handle_horizontal_movement()
 	
 	gravity(delta)
 	
@@ -15,6 +18,9 @@ func physics_update(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("ui_shoot"):
 		finished.emit(self, "StateGrappling")
+	
+	if actor.is_on_wall_only():
+		finished.emit(self, "StateWallSlide")
 	
 	if actor.is_on_floor():
 		finished.emit(self, "StateIdle")

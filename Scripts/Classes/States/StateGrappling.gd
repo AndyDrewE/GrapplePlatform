@@ -70,8 +70,9 @@ func grapple():
 		grapple_point = actor.grapple_raycast.get_collision_point()
 		var collision_normal = actor.grapple_raycast.get_collision_normal()
 		#check if collision is on bottom
-		if collision_normal.y == 1:
+		if collision_normal.y == 1.0:
 			rope_length = (actor.global_position - grapple_point).length()
+			print(collision_normal.y)
 		
 	# turn the node off regardless; we only needed it to find the hit
 	actor.grapple_raycast.enabled = false
