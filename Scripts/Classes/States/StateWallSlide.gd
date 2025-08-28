@@ -2,8 +2,6 @@ class_name StateWallSlide extends CharacterState
 
 var stick_timer = 0.0
 
-
-
 ## Called by the state machine on the engine's physics update tick.
 func physics_update(delta: float) -> void:
 	# Handle jump.
