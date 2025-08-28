@@ -29,3 +29,7 @@ func physics_update(delta: float) -> void:
 			finished.emit(self, "StateAirborne")
 			return
 	
+	if not actor.is_on_wall():
+		finished.emit(self,"StateAirborne")
+		return
+	
